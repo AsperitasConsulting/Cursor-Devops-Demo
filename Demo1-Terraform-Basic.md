@@ -1,4 +1,4 @@
-# Instructions
+# Demo 1:  Basic Terraform configuration and GitHub workflow
 
 Pull in basic_azure.tf into the composer and type in the following compose instruction:
 ```
