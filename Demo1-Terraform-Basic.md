@@ -1,4 +1,4 @@
-# Instructions
+# Demo 1:  Basic Terraform configuration and GitHub workflow
 
 Pull in basic_azure.tf into the composer and type in the following compose instruction:
 ```
@@ -39,6 +39,10 @@ add support for passing the terraform.tfvars for variable values
 use the terraform.tfvars file already in the configuration. Don't accept the values as inputs
 
 I plan multiple tfvars files. please add an input for the tfvars file name
-
-I plan multiple tfvars files. please add an input for the tfvars file name
 ```
+
+Now let's do an init and plan to see how we do.
+```
+perform a terraform init and plan on this configuration
+```
+> Note that Cursor can't execute commands for me, so it gives me instructions
