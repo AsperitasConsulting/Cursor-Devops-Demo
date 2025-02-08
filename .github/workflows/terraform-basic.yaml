@@ -1,0 +1,13 @@
+name: Demo 1 - Basic Terraform Workflow
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Print Hello World
+      run: echo "Hello World!"
