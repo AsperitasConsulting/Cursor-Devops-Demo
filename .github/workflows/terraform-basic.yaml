@@ -2,12 +2,52 @@ name: Demo 1 - Basic Terraform Workflow
 
 on:
   workflow_dispatch:
-
+    inputs:
+      apply:
+        description: 'Apply the Terraform changes'
+        type: boolean
+        required: true
+        default: false
+      destroy:
+        description: 'Destroy all resources'
+        type: boolean
+        required: true
+        default: false
 
 jobs:
-  say-hello:
+  terraform:
     runs-on: ubuntu-latest
+    environment: demo
     
+    defaults:
+      run:
+        working-directory: ./demo1_Terraform_Basic
+
     steps:
-    - name: Print Hello World
-      run: echo "Hello World!"
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Setup Azure CLI
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.ARM_SERVICE_PRINCIPAL_CREDS }}
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: "1.5.0"
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Plan
+      if: ${{ inputs.destroy == false }}
+      run: terraform plan -var-file="demo.tfvars" -out=tfplan
+      
+    - name: Terraform Apply
+      if: ${{ inputs.apply == true && inputs.destroy == false }}
+      run: terraform apply -auto-approve tfplan
+
+    - name: Terraform Destroy
+      if: ${{ inputs.destroy == true }}
+      run: terraform destroy -auto-approve -var-file="demo.tfvars"
