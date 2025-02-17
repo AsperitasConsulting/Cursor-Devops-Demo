@@ -9,3 +9,5 @@ account_replication_type = "GRS"
 
 # Tags
 environment = "demo"
+
+subscription_id = "42796e4f-3edc-4220-a540-1c6955db89cf" # Replace with your actual Azure subscription ID
