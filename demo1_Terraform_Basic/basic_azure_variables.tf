@@ -5,11 +5,6 @@ variable "resource_group_name" {
   default     = "example-resources"
 }
 
-variable "subscription_id" {
-  description = "The Azure Subscription ID to be used for resource creation"
-  type        = string
-}
-
 variable "location" {
   description = "Azure region for resources"
   type        = string
@@ -38,4 +33,4 @@ variable "environment" {
   description = "Environment tag value"
   type        = string
   default     = "dev"
-}
+} 
