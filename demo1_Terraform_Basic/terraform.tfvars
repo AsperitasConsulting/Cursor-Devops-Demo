@@ -1,0 +1,6 @@
+resource_group_name      = "example-resources"
+location                 = "West Europe"
+storage_account_name     = "examplestorageacct"
+account_tier             = "Standard"
+account_replication_type = "LRS"
+environment              = "staging"

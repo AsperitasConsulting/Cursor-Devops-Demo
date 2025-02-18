@@ -2,12 +2,58 @@ name: Demo 1 - Basic Terraform Workflow
 
 on:
   workflow_dispatch:
-
+    inputs:
+      apply:
+        description: 'Apply the Terraform plan'
+        required: false
+        default: 'false'
+      environment:
+        description: 'The environment to deploy to'
+        required: true
+        default: 'demo'
+        type: choice
+        options:
+          - demo
+          - staging
+          - production
+      tfvars_file:
+        description: 'The name of the tfvars file to use'
+        required: true
+        default: 'terraform.tfvars'
 
 jobs:
-  say-hello:
+  terraform:
     runs-on: ubuntu-latest
-    
+    environment: ${{ github.event.inputs.environment }}
+
     steps:
-    - name: Print Hello World
-      run: echo "Hello World!"
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.0.0
+
+    - name: Terraform Init
+      run: terraform init
+      working-directory: ./demo1_Terraform_Basic
+
+    - name: Terraform Plan
+      run: terraform plan -out=tfplan -var-file=${{ github.event.inputs.tfvars_file }}
+      working-directory: ./demo1_Terraform_Basic
+      env:
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event.inputs.apply == 'true'
+      run: terraform apply -auto-approve tfplan
+      working-directory: ./demo1_Terraform_Basic
+      env:
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
